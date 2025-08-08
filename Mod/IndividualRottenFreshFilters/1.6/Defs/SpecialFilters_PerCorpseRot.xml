@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <!-- Fresh ANIMAL corpses -->
+  <SpecialThingFilterDef>
+    <defName>IRFF_AllowFreshAnimalCorpses</defName>
+    <label>fresh animal corpses</label>
+    <description>Allow fresh animal corpses.</description>
+    <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
+    <parentCategory>CorpsesAnimal</parentCategory>
+    <modExtensions>
+      <li Class="IndividualRottenFreshFilters.CorpseRotFilterExtension">
+        <animals>true</animals>
+        <rot>Fresh</rot>
+      </li>
+    </modExtensions>
+  </SpecialThingFilterDef>
+
+  <!-- Rotten ANIMAL corpses -->
+  <SpecialThingFilterDef>
+    <defName>IRFF_AllowRottenAnimalCorpses</defName>
+    <label>rotten animal corpses</label>
+    <description>Allow rotten animal corpses.</description>
+    <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
+    <parentCategory>CorpsesAnimal</parentCategory>
+    <modExtensions>
+      <li Class="IndividualRottenFreshFilters.CorpseRotFilterExtension">
+        <animals>true</animals>
+        <rot>Rotting</rot>
+      </li>
+    </modExtensions>
+  </SpecialThingFilterDef>
+</Defs>
