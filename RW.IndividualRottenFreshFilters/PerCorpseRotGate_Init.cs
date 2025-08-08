@@ -43,38 +43,35 @@ namespace IndividualRottenFreshFilters
             var corpse = t as Corpse;
             if (corpse == null) return;
 
-            // Figure rot state (we only gate Fresh/Rotting; Dessicated falls through to vanilla)
             var rot = corpse.GetRotStage();
             if (rot != RotStage.Fresh && rot != RotStage.Rotting) return;
 
             var pawn = corpse.InnerPawn;
             if (pawn == null || pawn.RaceProps == null) return;
 
-            // Determine race bucket
+            // Work out buckets
             bool isHuman = pawn.RaceProps.Humanlike;
-            bool isAnimal = pawn.RaceProps.Animal;
             bool isInsect = IsInsect(pawn);
+            bool isAnimalNonInsect = pawn.RaceProps.Animal && !isInsect; // <- insects are animals, so exclude them here
             bool isEntity = pawn.RaceProps.IsAnomalyEntity;
 
-            // Pick the matching per-category filter
+            // Pick the matching per-category filter (insects before animals!)
             SpecialThingFilterDef gate = null;
             if (isHuman)
                 gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshHuman : PerCorpseRotGate_Init.RottenHuman;
-            else if (isAnimal)
-                gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshAnimal : PerCorpseRotGate_Init.RottenAnimal;
             else if (isInsect)
                 gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshInsect : PerCorpseRotGate_Init.RottenInsect;
+            else if (isAnimalNonInsect)
+                gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshAnimal : PerCorpseRotGate_Init.RottenAnimal;
             else if (isEntity)
                 gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshEntity : PerCorpseRotGate_Init.RottenEntity;
 
-            if (gate == null) return; // no specific gate for this combo -> leave vanilla result
+            if (gate == null) return;
 
-            // Authoritative gate: if your per-category toggle is ON, allow; if OFF, disallow.
-            // This overrides vanilla global "Allow fresh/rotten".
+            // Your per-category toggle is authoritative over vanilla fresh/rotten
             __result = __instance.Allows(gate);
         }
 
-        // Helpers (compatible with old/new RW versions)
         private static bool IsInsect(Pawn p)
         {
             try { return p.RaceProps.Insect; } catch { }

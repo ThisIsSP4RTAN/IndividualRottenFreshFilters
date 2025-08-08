@@ -64,9 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CorpseRotFilterExtension.cs" />
-    <Compile Include="Patch_Stockpile.cs" />
     <Compile Include="PerCorpseRotGate_Init.cs" />
-    <Compile Include="Zone_Stockpile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

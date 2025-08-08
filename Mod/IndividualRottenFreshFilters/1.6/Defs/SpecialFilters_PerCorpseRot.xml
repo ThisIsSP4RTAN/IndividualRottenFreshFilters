@@ -92,7 +92,7 @@
   </SpecialThingFilterDef>
   
   <!-- Fresh ENTITY corpses (Anomaly) -->
-  <SpecialThingFilterDef>
+  <SpecialThingFilterDef MayRequire="Ludeon.RimWorld.Anomaly">
     <defName>IRFF_AllowFreshEntityCorpses</defName>
     <label>allow fresh entity corpses</label>
     <description>Allow fresh entity corpses.</description>
@@ -107,7 +107,7 @@
   </SpecialThingFilterDef>
 
   <!-- Rotten ENTITY corpses (Anomaly) -->
-  <SpecialThingFilterDef>
+  <SpecialThingFilterDef MayRequire="Ludeon.RimWorld.Anomaly">
     <defName>IRFF_AllowRottenEntityCorpses</defName>
     <label>allow rotten entity corpses</label>
     <description>Allow rotten entity corpses.</description>
