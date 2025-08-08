@@ -17,17 +17,30 @@ namespace IndividualRottenFreshFilters
         internal static SpecialThingFilterDef FreshEntity;
         internal static SpecialThingFilterDef RottenEntity;
 
+        // Vanilla master switches (resolve by name to handle version differences)
+        internal static SpecialThingFilterDef VanillaAllowFresh;
+        internal static SpecialThingFilterDef VanillaAllowRot; // "AllowRotten" or "AllowRotting" depending on version
+
         static PerCorpseRotGate_Init()
         {
             // Grab your custom filter defs by defName (update names if you used different ones)
             FreshHuman = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshHumanlikeCorpses");
             RottenHuman = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenHumanlikeCorpses");
+
             FreshAnimal = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshAnimalCorpses");
             RottenAnimal = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenAnimalCorpses");
+
             FreshInsect = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshInsectCorpses");
             RottenInsect = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenInsectCorpses");
+
             FreshEntity = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshEntityCorpses");
             RottenEntity = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenEntityCorpses");
+
+            // Vanilla master filters (name differs across versions)
+            VanillaAllowFresh = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("AllowFresh");
+            VanillaAllowRot =
+                DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("AllowRotten") ??
+                DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("AllowRotting");
 
             new Harmony("IndividualRottenFreshFilters.GateCorpsesByCategory").Patch(
                 AccessTools.Method(typeof(ThingFilter), nameof(ThingFilter.Allows), new Type[] { typeof(Thing) }),
@@ -46,10 +59,21 @@ namespace IndividualRottenFreshFilters
             var rot = corpse.GetRotStage();
             if (rot != RotStage.Fresh && rot != RotStage.Rotting) return;
 
+            if (!__result) return; // vanilla already rejected (wrong category/allowed thing/etc.)
+
+            // Vanilla master switches (null => assume enabled so we don't hard-block)
+            bool vanillaFreshOn = (PerCorpseRotGate_Init.VanillaAllowFresh == null) ||
+                                   __instance.Allows(PerCorpseRotGate_Init.VanillaAllowFresh);
+            bool vanillaRotOn = (PerCorpseRotGate_Init.VanillaAllowRot == null) ||
+                                   __instance.Allows(PerCorpseRotGate_Init.VanillaAllowRot);
+
+            if (rot == RotStage.Fresh && !vanillaFreshOn) { __result = false; return; }
+            if (rot == RotStage.Rotting && !vanillaRotOn) { __result = false; return; }
+
             var pawn = corpse.InnerPawn;
             if (pawn == null || pawn.RaceProps == null) return;
 
-            // Work out buckets
+            // Insects are animals in vanilla—check insects first to keep them independent
             bool isHuman = pawn.RaceProps.Humanlike;
             bool isInsect = IsInsect(pawn);
             bool isAnimalNonInsect = pawn.RaceProps.Animal && !isInsect; // <- insects are animals, so exclude them here
