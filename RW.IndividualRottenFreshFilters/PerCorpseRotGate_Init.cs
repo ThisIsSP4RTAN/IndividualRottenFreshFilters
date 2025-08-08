@@ -8,26 +8,26 @@ namespace IndividualRottenFreshFilters
     [StaticConstructorOnStartup]
     static class PerCorpseRotGate_Init
     {
-        internal static SpecialThingFilterDef FreshAnimal;
-        internal static SpecialThingFilterDef RottenAnimal;
         internal static SpecialThingFilterDef FreshHuman;
         internal static SpecialThingFilterDef RottenHuman;
+        internal static SpecialThingFilterDef FreshAnimal;
+        internal static SpecialThingFilterDef RottenAnimal;
         internal static SpecialThingFilterDef FreshInsect;
         internal static SpecialThingFilterDef RottenInsect;
-        internal static SpecialThingFilterDef FreshMech;
-        internal static SpecialThingFilterDef RottenMech;
+        internal static SpecialThingFilterDef FreshEntity;
+        internal static SpecialThingFilterDef RottenEntity;
 
         static PerCorpseRotGate_Init()
         {
             // Grab your custom filter defs by defName (update names if you used different ones)
-            FreshAnimal = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshAnimalCorpses");
-            RottenAnimal = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenAnimalCorpses");
             FreshHuman = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshHumanlikeCorpses");
             RottenHuman = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenHumanlikeCorpses");
+            FreshAnimal = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshAnimalCorpses");
+            RottenAnimal = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenAnimalCorpses");
             FreshInsect = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshInsectCorpses");
             RottenInsect = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenInsectCorpses");
-            FreshMech = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshMechanoidCorpses");
-            RottenMech = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenMechanoidCorpses");
+            FreshEntity = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowFreshEntityCorpses");
+            RottenEntity = DefDatabase<SpecialThingFilterDef>.GetNamedSilentFail("IRFF_AllowRottenEntityCorpses");
 
             new Harmony("IndividualRottenFreshFilters.GateCorpsesByCategory").Patch(
                 AccessTools.Method(typeof(ThingFilter), nameof(ThingFilter.Allows), new Type[] { typeof(Thing) }),
@@ -54,18 +54,18 @@ namespace IndividualRottenFreshFilters
             bool isHuman = pawn.RaceProps.Humanlike;
             bool isAnimal = pawn.RaceProps.Animal;
             bool isInsect = IsInsect(pawn);
-            bool isMech = IsMechanoid(pawn);
+            bool isEntity = pawn.RaceProps.IsAnomalyEntity;
 
             // Pick the matching per-category filter
             SpecialThingFilterDef gate = null;
             if (isHuman)
                 gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshHuman : PerCorpseRotGate_Init.RottenHuman;
-            else if (isMech)
-                gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshMech : PerCorpseRotGate_Init.RottenMech;
-            else if (isInsect)
-                gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshInsect : PerCorpseRotGate_Init.RottenInsect;
             else if (isAnimal)
                 gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshAnimal : PerCorpseRotGate_Init.RottenAnimal;
+            else if (isInsect)
+                gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshInsect : PerCorpseRotGate_Init.RottenInsect;
+            else if (isEntity)
+                gate = (rot == RotStage.Fresh) ? PerCorpseRotGate_Init.FreshEntity : PerCorpseRotGate_Init.RottenEntity;
 
             if (gate == null) return; // no specific gate for this combo -> leave vanilla result
 
@@ -79,12 +79,6 @@ namespace IndividualRottenFreshFilters
         {
             try { return p.RaceProps.Insect; } catch { }
             return p.RaceProps.FleshType == FleshTypeDefOf.Insectoid;
-        }
-
-        private static bool IsMechanoid(Pawn p)
-        {
-            try { return p.RaceProps.IsMechanoid; } catch { }
-            return p.RaceProps.FleshType == FleshTypeDefOf.Mechanoid;
         }
     }
 }

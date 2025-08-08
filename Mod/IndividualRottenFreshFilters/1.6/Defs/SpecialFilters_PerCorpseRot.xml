@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
+
   <!-- Fresh ANIMAL corpses -->
   <SpecialThingFilterDef>
     <defName>IRFF_AllowFreshAnimalCorpses</defName>
-    <label>fresh animal corpses</label>
+    <label>allow fresh animal corpses</label>
     <description>Allow fresh animal corpses.</description>
     <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
     <parentCategory>CorpsesAnimal</parentCategory>
@@ -18,7 +19,7 @@
   <!-- Rotten ANIMAL corpses -->
   <SpecialThingFilterDef>
     <defName>IRFF_AllowRottenAnimalCorpses</defName>
-    <label>rotten animal corpses</label>
+    <label>allow rotten animal corpses</label>
     <description>Allow rotten animal corpses.</description>
     <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
     <parentCategory>CorpsesAnimal</parentCategory>
@@ -29,4 +30,95 @@
       </li>
     </modExtensions>
   </SpecialThingFilterDef>
+
+  <!-- Fresh HUMANLIKE corpses -->
+  <SpecialThingFilterDef>
+    <defName>IRFF_AllowFreshHumanlikeCorpses</defName>
+    <label>allow fresh humanlike corpses</label>
+    <description>Allow fresh humanlike corpses.</description>
+    <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
+    <parentCategory>CorpsesHumanlike</parentCategory>
+    <modExtensions>
+      <li Class="IndividualRottenFreshFilters.CorpseRotFilterExtension">
+        <humanlikes>true</humanlikes>
+        <rot>Fresh</rot>
+      </li>
+    </modExtensions>
+  </SpecialThingFilterDef>
+
+  <!-- Rotten HUMANLIKE corpses -->
+  <SpecialThingFilterDef>
+    <defName>IRFF_AllowRottenHumanlikeCorpses</defName>
+    <label>allow rotten humanlike corpses</label>
+    <description>Allow rotten humanlike corpses.</description>
+    <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
+    <parentCategory>CorpsesHumanlike</parentCategory>
+    <modExtensions>
+      <li Class="IndividualRottenFreshFilters.CorpseRotFilterExtension">
+        <humanlikes>true</humanlikes>
+        <rot>Rotting</rot>
+      </li>
+    </modExtensions>
+  </SpecialThingFilterDef>
+
+  <!-- Fresh INSECT corpses -->
+  <SpecialThingFilterDef>
+    <defName>IRFF_AllowFreshInsectCorpses</defName>
+    <label>allow fresh insect corpses</label>
+    <description>Allow fresh insect corpses.</description>
+    <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
+    <parentCategory>CorpsesInsect</parentCategory>
+    <modExtensions>
+      <li Class="IndividualRottenFreshFilters.CorpseRotFilterExtension">
+        <insects>true</insects>
+        <rot>Fresh</rot>
+      </li>
+    </modExtensions>
+  </SpecialThingFilterDef>
+
+  <!-- Rotten INSECT corpses -->
+  <SpecialThingFilterDef>
+    <defName>IRFF_AllowRottenInsectCorpses</defName>
+    <label>allow rotten insect corpses</label>
+    <description>Allow rotten insect corpses.</description>
+    <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
+    <parentCategory>CorpsesInsect</parentCategory>
+    <modExtensions>
+      <li Class="IndividualRottenFreshFilters.CorpseRotFilterExtension">
+        <insects>true</insects>
+        <rot>Rotting</rot>
+      </li>
+    </modExtensions>
+  </SpecialThingFilterDef>
+  
+  <!-- Fresh ENTITY corpses (Anomaly) -->
+  <SpecialThingFilterDef>
+    <defName>IRFF_AllowFreshEntityCorpses</defName>
+    <label>allow fresh entity corpses</label>
+    <description>Allow fresh entity corpses.</description>
+    <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
+    <parentCategory>CorpsesEntity</parentCategory>
+    <modExtensions>
+      <li Class="IndividualRottenFreshFilters.CorpseRotFilterExtension">
+        <entities>true</entities>
+        <rot>Fresh</rot>
+      </li>
+    </modExtensions>
+  </SpecialThingFilterDef>
+
+  <!-- Rotten ENTITY corpses (Anomaly) -->
+  <SpecialThingFilterDef>
+    <defName>IRFF_AllowRottenEntityCorpses</defName>
+    <label>allow rotten entity corpses</label>
+    <description>Allow rotten entity corpses.</description>
+    <workerClass>IndividualRottenFreshFilters.SpecialThingFilterWorker_CorpseRotByRace</workerClass>
+    <parentCategory>CorpsesEntity</parentCategory>
+    <modExtensions>
+      <li Class="IndividualRottenFreshFilters.CorpseRotFilterExtension">
+        <entities>true</entities>
+        <rot>Rotting</rot>
+      </li>
+    </modExtensions>
+  </SpecialThingFilterDef>
+
 </Defs>

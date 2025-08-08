@@ -14,6 +14,10 @@ namespace IndividualRottenFreshFilters
             float y = y = rect.y + 260f;
             Rect row = new Rect(rect.x + 24, y, 300, 24);
 
+            Widgets.CheckboxLabeled(row, "Fresh humanlikes", ref __instance.allowFreshHumanlikes);
+            row.y += 24;
+            Widgets.CheckboxLabeled(row, "Rotten humanlikes", ref __instance.allowRottenHumanlikes);
+            row.y += 24;
             Widgets.CheckboxLabeled(row, "Fresh animals", ref __instance.allowFreshAnimals);
             row.y += 24;
             Widgets.CheckboxLabeled(row, "Rotten animals", ref __instance.allowRottenAnimals);
@@ -22,9 +26,10 @@ namespace IndividualRottenFreshFilters
             row.y += 24;
             Widgets.CheckboxLabeled(row, "Rotten insects", ref __instance.allowRottenInsects);
             row.y += 24;
-            Widgets.CheckboxLabeled(row, "Fresh humanlikes", ref __instance.allowFreshHumanlikes);
+            Widgets.CheckboxLabeled(row, "Fresh entities", ref __instance.allowFreshEntities);
             row.y += 24;
-            Widgets.CheckboxLabeled(row, "Rotten humanlikes", ref __instance.allowRottenHumanlikes);
+            Widgets.CheckboxLabeled(row, "Rotten entities", ref __instance.allowRottenEntities);
+
         }
     }
 
@@ -40,12 +45,17 @@ namespace IndividualRottenFreshFilters
                 bool isRotten = rottable != null && rottable.Stage == RotStage.Rotting;
 
                 var innerPawn = corpse.InnerPawn;
+                bool isHumanlike = innerPawn.RaceProps.Humanlike;
                 bool isAnimal = innerPawn.RaceProps.Animal;
                 bool isInsect = innerPawn.RaceProps.Insect;
-                bool isHumanlike = innerPawn.RaceProps.Humanlike;
+                bool isEntity = innerPawn.RaceProps.IsAnomalyEntity;
 
                 // pick the right toggle
-                if (isAnimal)
+                if (isHumanlike)
+                    __result = isRotten
+                      ? __instance.allowRottenHumanlikes
+                      : __instance.allowFreshHumanlikes;
+                else if (isAnimal)
                     __result = isRotten
                       ? __instance.allowRottenAnimals
                       : __instance.allowFreshAnimals;
@@ -53,10 +63,10 @@ namespace IndividualRottenFreshFilters
                     __result = isRotten
                       ? __instance.allowRottenInsects
                       : __instance.allowFreshInsects;
-                else if (isHumanlike)
+                else if (isEntity)
                     __result = isRotten
-                      ? __instance.allowRottenHumanlikes
-                      : __instance.allowFreshHumanlikes;
+                        ? __instance.allowRottenEntities
+                        : __instance.allowFreshEntities;
                 else
                     __result = true; // any other corpse type, fallback to normal
 

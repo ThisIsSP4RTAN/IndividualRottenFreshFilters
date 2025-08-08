@@ -7,11 +7,10 @@ namespace IndividualRottenFreshFilters
 {
     public class CorpseRotFilterExtension : DefModExtension
     {
-        public bool animals;
         public bool humanlikes;
+        public bool animals;
         public bool insects;
-        public bool mechanoids;
-        // "Fresh", "Rotting", or "Dessicated"
+        public bool entities;
         public string rot;
     }
 
@@ -44,10 +43,10 @@ namespace IndividualRottenFreshFilters
             if (pawn == null) return false;
 
             // Race gates: if a flag is true, it must match
-            if (ext.animals && !pawn.RaceProps.Animal) return false;
             if (ext.humanlikes && !pawn.RaceProps.Humanlike) return false;
+            if (ext.animals && !pawn.RaceProps.Animal) return false;
             if (ext.insects && !pawn.RaceProps.Insect) return false;
-            if (ext.mechanoids && !pawn.RaceProps.IsMechanoid) return false;
+            if (ext.entities && !pawn.RaceProps.IsAnomalyEntity) return false;
 
             // Rot stage gate
             RotStage targetStage = RotStage.Fresh;

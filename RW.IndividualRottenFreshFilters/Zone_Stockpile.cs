@@ -7,23 +7,27 @@ namespace IndividualRottenFreshFilters
     {
         // … existing stockpile code …  
 
-        // new toggles  
+        // new toggles
+        public bool allowFreshHumanlikes = true;
+        public bool allowRottenHumanlikes = true;
         public bool allowFreshAnimals = true;
         public bool allowRottenAnimals = true;
         public bool allowFreshInsects = true;
         public bool allowRottenInsects = true;
-        public bool allowFreshHumanlikes = true;
-        public bool allowRottenHumanlikes = true;
+        public bool allowFreshEntities = true;
+        public bool allowRottenEntities = true;
 
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref allowFreshHumanlikes, "allowFreshHumanlikes", true);
+            Scribe_Values.Look(ref allowRottenHumanlikes, "allowRottenHumanlikes", true);
             Scribe_Values.Look(ref allowFreshAnimals, "allowFreshAnimals", true);
             Scribe_Values.Look(ref allowRottenAnimals, "allowRottenAnimals", true);
             Scribe_Values.Look(ref allowFreshInsects, "allowFreshInsects", true);
             Scribe_Values.Look(ref allowRottenInsects, "allowRottenInsects", true);
-            Scribe_Values.Look(ref allowFreshHumanlikes, "allowFreshHumanlikes", true);
-            Scribe_Values.Look(ref allowRottenHumanlikes, "allowRottenHumanlikes", true);
+            Scribe_Values.Look(ref allowFreshEntities, "allowFreshEntities", true);
+            Scribe_Values.Look(ref allowRottenEntities, "allowRottenEntities", true);
         }
 
         // Implementing the abstract property from Zone  
